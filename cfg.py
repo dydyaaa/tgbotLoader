@@ -1,5 +1,5 @@
 # Токен бота
-TOKEN = '916278807:AAGsNPTB7NkuJ5AKqRX2njl-JrXa-IZiCVI'
+TOKEN = ''
 
 # Канал, на который нужно подписаться
-channel_name = "@evdaktest"
+channel_name = "@"
