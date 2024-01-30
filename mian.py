@@ -28,15 +28,13 @@ def func(message):
         bot.send_message(message.chat.id, "Выберете источник для скачивания видео", reply_markup=btn.video_btn)  
     elif message.text == 'VK':
         bot.send_message(message.chat.id, "Введите ссылку на видео:")
-        bot.send_message(message.chat.id, "В разработке")
-        start(message)
+        bot.send_message(message.chat.id, "В разработке", reply_markup=btn.func_btn)
     elif message.text == 'YouTube':
         bot.send_message(message.chat.id, "Введите ссылку на видео:", reply_markup=btn.back_btn)
         bot.register_next_step_handler(message, download_yt)
     elif message.text == 'Instagram':
         bot.send_message(message.chat.id, "Введите ссылку на видео:")
-        bot.send_message(message.chat.id, "В разработке")
-        start(message)
+        bot.send_message(message.chat.id, "В разработке", reply_markup=btn.func_btn)
     elif message.text == 'гпт':
         bot.send_message(message.chat.id, "Введите ваш запрос:", reply_markup=btn.back_btn)
         bot.register_next_step_handler(message, ask)
@@ -54,12 +52,10 @@ def ask(message):
             model = g4f.models.gpt_4,
             messages=[{"role": "user", "content": message.text}],
         )  
-        bot.send_message(message.chat.id, response)
-        start(message)
+        bot.send_message(message.chat.id, response, reply_markup=btn.func_btn)
     except Exception as e:
-        bot.send_message(message.chat.id, 'При выполенении запроса произошла ошибка')
+        bot.send_message(message.chat.id, 'При выполенении запроса произошла ошибка', reply_markup=btn.func_btn)
         print(e)
-        start(message)
 
 def download_yt(message):
     if message.text == 'Назад':
@@ -68,18 +64,16 @@ def download_yt(message):
     try:
         yt = YouTube(message.text)
         video = yt.streams.filter(file_extension='mp4', progressive=True).get_highest_resolution()
-        video_title = ''.join(char for char in video.title if char.isalnum() or char in (' ', '.', '_', '_'))
+        video_title = ''.join(char for char in video.title if char.isalnum() or char in (' ', '.', '_', '|'))
         folder_name = 'download_media'
         os.makedirs(folder_name, exist_ok=True)
         video_path = os.path.join(folder_name, video_title + '.mp4')
         video.download(output_path=folder_name, filename=video_title + '.mp4')
-        bot.send_video(message.chat.id, open(video_path, 'rb'))
+        bot.send_video(message.chat.id, open(video_path, 'rb'), reply_markup=btn.func_btn)
         os.remove(video_path)
-        start(message)
     except Exception as e:
-        bot.send_message(message.chat.id, f'При скачивании видео возникла ошибка!')
+        bot.send_message(message.chat.id, f'При скачивании видео возникла ошибка!', reply_markup=btn.func_btn)
         print(e)
-        start(message)
 
 def tg_stat(message):
     if message.text == 'Назад':
@@ -90,8 +84,7 @@ def tg_stat(message):
         bot.register_next_step_handler(message, tg_stat)
     else:
         result = tg_stats.stat(message.text)
-        bot.send_message(message.chat.id, result)
-        start(message)
+        bot.send_message(message.chat.id, result, reply_markup=btn.func_btn)
 
 if __name__ == "__main__":
     bot.polling()
