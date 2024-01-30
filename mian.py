@@ -39,13 +39,13 @@ def func(message):
         bot.send_message(message.chat.id, "Введите ваш запрос:", reply_markup=btn.back_btn)
         bot.register_next_step_handler(message, ask)
     elif message.text == 'Назад':
-        start(message)
+        bot.send_message(message.chat.id, f'Главное меню', reply_markup=btn.func_btn)
     else:
         bot.send_message(message.chat.id, f'Простите, я вас не понимаю.')
 
 def ask(message):
     if message.text == 'Назад':
-        start(message)
+        bot.send_message(message.chat.id, f'Главное меню', reply_markup=btn.func_btn)
         return 0
     try:
         response = g4f.ChatCompletion.create(
@@ -59,7 +59,7 @@ def ask(message):
 
 def download_yt(message):
     if message.text == 'Назад':
-        start(message)
+        bot.send_message(message.chat.id, f'Главное меню', reply_markup=btn.func_btn)
         return 0
     try:
         yt = YouTube(message.text)
@@ -77,7 +77,7 @@ def download_yt(message):
 
 def tg_stat(message):
     if message.text == 'Назад':
-        start(message)
+        bot.send_message(message.chat.id, f'Главное меню', reply_markup=btn.func_btn)
         return 0
     if len(message.text) < 14:
         bot.send_message(message.chat.id, f'Введите корректную ссылку')
