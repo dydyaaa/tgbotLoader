@@ -6,3 +6,5 @@ channel_link = 'https://t.me/evdaktest'
 
 # Канал, на который нужно подписаться
 channel_name = "@" + channel_link[13:]
+
+directory = r"C:\Users\Admin\Downloads"
