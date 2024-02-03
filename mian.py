@@ -28,15 +28,6 @@ def func(message):
     elif message.text == 'Скачать видео':
         bot.send_message(message.chat.id, "Введите ссылку на видео:", reply_markup=btn.back_btn)
         bot.register_next_step_handler(message, choose_url)
-    elif message.text == 'VK':
-        bot.send_message(message.chat.id, "Введите ссылку на видео:")
-        bot.send_message(message.chat.id, "В разработке", reply_markup=btn.func_btn)
-    elif message.text == 'YouTube':
-        bot.send_message(message.chat.id, "Введите ссылку на видео:", reply_markup=btn.back_btn)
-        bot.register_next_step_handler(message, download_yt)
-    elif message.text == 'Instagram':
-        bot.send_message(message.chat.id, "Введите ссылку на видео:")
-        bot.register_next_step_handler(message, download_inst)
     elif message.text == 'гпт':
         bot.send_message(message.chat.id, "Введите ваш запрос:", reply_markup=btn.back_btn)
         bot.register_next_step_handler(message, ask)
