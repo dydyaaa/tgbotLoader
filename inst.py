@@ -1,11 +1,11 @@
 from selenium import webdriver
-import os, time, glob
+import os, time, cfg
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-download_directory = r"C:\Users\Admin\Downloads"
+directory = cfg.directory
 timeout = 60
 poll_interval = 1
 
@@ -13,8 +13,17 @@ def main(urll):
     
     index = int(urll[-1]) - 1
 
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument("--disable-notifications")
+    chrome_options.add_argument("--disable-popup-blocking")
+    chrome_options.add_argument("--disable-download-notification")
+    chrome_options.add_argument("--disable-infobars")
+    chrome_options.add_experimental_option("prefs", {
+        "download.default_directory": directory
+    })
+
     # Открываем браузер и переходим по ссылке
-    browser = webdriver.Chrome()
+    browser = webdriver.Chrome(options=chrome_options)
     url = "https://sssinstagram.com/ru" 
 
     browser.implicitly_wait(10)
@@ -46,7 +55,7 @@ def main(urll):
     
     start_time = time.time()
     while time.time() - start_time < timeout:
-        files = [f for f in os.listdir(download_directory) if f.lower().endswith('.mp4')]
+        files = [f for f in os.listdir(directory) if f.lower().endswith('.mp4')]
     
         if files:
             break

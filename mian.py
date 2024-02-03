@@ -26,7 +26,8 @@ def func(message):
         bot.send_message(message.chat.id, "Введите ссылку на тг канал:", reply_markup=btn.back_btn)
         bot.register_next_step_handler(message, tg_stat) 
     elif message.text == 'Скачать видео':
-        bot.send_message(message.chat.id, "Выберете источник для скачивания видео", reply_markup=btn.video_btn)  
+        bot.send_message(message.chat.id, "Введите ссылку на видео:", reply_markup=btn.back_btn)
+        bot.register_next_step_handler(message, choose_url)
     elif message.text == 'VK':
         bot.send_message(message.chat.id, "Введите ссылку на видео:")
         bot.send_message(message.chat.id, "В разработке", reply_markup=btn.func_btn)
@@ -43,6 +44,19 @@ def func(message):
         bot.send_message(message.chat.id, f'Главное меню', reply_markup=btn.func_btn)
     else:
         bot.send_message(message.chat.id, f'Простите, я вас не понимаю.')
+
+def choose_url(message):
+    if message.text == 'Назад':
+        bot.send_message(message.chat.id, f'Главное меню', reply_markup=btn.func_btn)
+        return 0
+    if message.text[:14] == 'https://vk.com':
+        bot.send_message(message.chat.id, "В разработке", reply_markup=btn.func_btn)
+    elif message.text[:23] == 'https://www.youtube.com':
+        (download_yt(message))
+    elif message.text[:25] == 'https://www.instagram.com':
+        (download_inst(message))
+    else:
+        bot.send_message(message.chat.id, f'Извините, но этот источник мне неизвестен.', reply_markup=btn.func_btn)
 
 def ask(message):
     if message.text == 'Назад':
