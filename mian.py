@@ -1,4 +1,4 @@
-import telebot, os, cfg, tg_stats, g4f, inst, glob
+import telebot, os, cfg, tg_stats, g4f, inst, glob, vk
 import buttons as btn
 from pytube import YouTube
 
@@ -41,11 +41,11 @@ def choose_url(message):
         bot.send_message(message.chat.id, f'Главное меню', reply_markup=btn.func_btn)
         return 0
     if message.text[:14] == 'https://vk.com':
-        bot.send_message(message.chat.id, "В разработке", reply_markup=btn.func_btn)
+        download_vk(message)
     elif message.text[:23] == 'https://www.youtube.com':
-        (download_yt(message))
+        download_yt(message)
     elif message.text[:25] == 'https://www.instagram.com':
-        (download_inst(message))
+        download_inst(message)
     else:
         bot.send_message(message.chat.id, f'Извините, но этот источник мне неизвестен.', reply_markup=btn.func_btn)
 
@@ -70,6 +70,23 @@ def download_inst(message):
     
     try:
         inst.main(message.text)
+        mp4_files = glob.glob(os.path.join(directory, '*.mp4'))
+        latest_mp4_file = max(mp4_files, key=os.path.getmtime)
+        full_path = os.path.abspath(latest_mp4_file)
+        bot.send_video(message.chat.id, open(full_path, 'rb'), reply_markup=btn.func_btn)
+        os.remove(full_path)
+
+    except Exception as e:
+        bot.send_message(message.chat.id, f'При скачивании видео возникла ошибка!', reply_markup=btn.func_btn)
+        print(e)
+
+def download_vk(message):
+    if message.text == 'Назад':
+        bot.send_message(message.chat.id, f'Главное меню', reply_markup=btn.func_btn)
+        return 0
+    
+    try:
+        vk.main(message.text)
         mp4_files = glob.glob(os.path.join(directory, '*.mp4'))
         latest_mp4_file = max(mp4_files, key=os.path.getmtime)
         full_path = os.path.abspath(latest_mp4_file)
