@@ -72,7 +72,9 @@ def download_inst(message):
         inst.main(message.text)
         mp4_files = glob.glob(os.path.join(directory, '*.mp4'))
         latest_mp4_file = max(mp4_files, key=os.path.getmtime)
-        full_path = os.path.abspath(latest_mp4_file)
+        new_path = os.path.join(directory, 'video.mp4')
+        os.rename(latest_mp4_file, new_path)
+        full_path = os.path.abspath(new_path)
         bot.send_video(message.chat.id, open(full_path, 'rb'), reply_markup=btn.func_btn)
         os.remove(full_path)
 
@@ -89,7 +91,9 @@ def download_vk(message):
         vk.main(message.text)
         mp4_files = glob.glob(os.path.join(directory, '*.mp4'))
         latest_mp4_file = max(mp4_files, key=os.path.getmtime)
-        full_path = os.path.abspath(latest_mp4_file)
+        new_path = os.path.join(directory, 'video.mp4')
+        os.rename(latest_mp4_file, new_path)
+        full_path = os.path.abspath(new_path)
         bot.send_video(message.chat.id, open(full_path, 'rb'), reply_markup=btn.func_btn)
         os.remove(full_path)
 

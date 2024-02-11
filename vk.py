@@ -28,7 +28,7 @@ def main(urll):
     browser.get(url)
     wait = WebDriverWait(browser, 10)
     wait.until(lambda driver: driver.execute_script("return document.readyState") == "complete")
-
+    
     # Вставляем в input нашу ссылку на пост
     input_field = browser.find_element(By.XPATH, "//input[@id='url']")
     input_text = urll
